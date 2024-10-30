@@ -155,7 +155,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(2000);
+  setTimer1(200);
 
 
   while (1)
@@ -181,7 +181,7 @@ int main(void)
 	  	  			  index_led = 0;
 	  				}
 	  	  	  if(timer1_flag == 1){
-	  	  		  setTimer1(2000);
+	  	  		  setTimer1(200);
 	  			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 	  			HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  	  	  }
