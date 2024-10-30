@@ -58,7 +58,8 @@ static void MX_TIM2_Init(void);
 /* USER CODE BEGIN 0 */
 const uint8_t Led7Seg[] = { 0b11000000, 0b11111001, 0b10100100, 0b10110000, 0b10011001, 0b10010010,
 		0b10000010, 0b11111000, 0b10000000, 0b10010000  };
-
+const int MAX_LED = 4;
+  int index_led = 0;
 void display7SEG(int num){
 	uint8_t led_id = Led7Seg[num];
 	HAL_GPIO_WritePin(a_GPIO_Port, a_Pin, (led_id & 0x01) );
@@ -108,6 +109,14 @@ void update7SEG(int index){
 		break;
 	}
 }
+int hour = 15 , minute = 8 , second = 50;
+
+void updateClockBuffer(){
+		led_buffer[0] = hour/10;
+		led_buffer[1] = hour%10;
+		led_buffer[2] = minute/10;
+		led_buffer[3] = minute%10;
+}
 
 /* USER CODE END 0 */
 
@@ -146,20 +155,33 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  setTimer1(100);
-  const int MAX_LED = 4;
-  int index_led = 0;
+  setTimer1(2000);
+
 
   while (1)
   {
+
 	  	  	  if (timer1_flag == 2){
 	  	  		  timer1_flag = 0;
+	  	  		  second++;
+	  	  		  if(second>=60){
+	  	  			  second=0;
+	  	  			  minute++;
+	  	  		  }
+	  	  		  if(minute>=60){
+	  	  			  minute=0;
+	  	  			  hour++;
+	  	  		  }
+	  	  		  if(hour>=24){
+	  	  			 hour=0;
+	  	  		  }
+	  	  		  updateClockBuffer();
 	  	  		  update7SEG(index_led++);
-	  	  		  if(index_led >= MAX_LED) index_led=0;
-
+	  	  		  if(index_led >= MAX_LED)
+	  	  			  index_led = 0;
 	  				}
 	  	  	  if(timer1_flag == 1){
-	  	  		  setTimer1(100);
+	  	  		  setTimer1(2000);
 	  			HAL_GPIO_TogglePin(LED_RED_GPIO_Port, LED_RED_Pin);
 	  			HAL_GPIO_TogglePin(DOT_GPIO_Port, DOT_Pin);
 	  	  	  }
