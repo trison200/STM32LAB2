@@ -22,7 +22,7 @@ void timerRun(){
 	if(timer1_counter <= 0){
 		timer1_flag = 1;
 	}
-	if(timer1_counter==2){
+	if(timer1_counter==10){
 		timer1_flag = 2;
 	}
 }
